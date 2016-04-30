@@ -2,7 +2,11 @@
 
 return [
 
-    'name' => 'app.dev',
+    'name' => 'Sub App',
+
+    'root' => [
+        'path' => '/home/owl/workspace/www/self/user/storage/'
+    ],
 
     /*
     |--------------------------------------------------------------------------

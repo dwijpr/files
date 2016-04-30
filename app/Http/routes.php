@@ -14,13 +14,9 @@
 Route::auth();
 
 Route::get('/', 'IndexController@index');
-Route::get('/dashboard', 'DashboardController@index');
 
 
 $objects = [
-    "User",
-    "Role",
-    "Permission",
 ];
 
 foreach ($objects as $i => $v) {

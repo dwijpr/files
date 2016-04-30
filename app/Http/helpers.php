@@ -1,6 +1,13 @@
 <?php
 
-if (!function_exists('objectsToArray')) {
+if (!function_exists('root_url')) {
+    function root_url($path = false) {
+        $url = $_SERVER['SERVER_NAME'].($path?"/".$path:"");
+        return "//".preg_replace('~/+~', '/', $url);
+    }
+}
+
+if (!function_exists('objects_to_array')) {
     function objectsToArray($objects, $key = 'id') {
         $return = [];
         if (count($objects) > 0) {
@@ -12,7 +19,7 @@ if (!function_exists('objectsToArray')) {
     }
 }
 
-if (!function_exists('objectsToArrayKeyValue')) {
+if (!function_exists('objects_to_array_key_value')) {
     function objectsToArrayKeyValue($objects, $idKey, $valueKey) {
         $return = [];
         if (count($objects) > 0) {
