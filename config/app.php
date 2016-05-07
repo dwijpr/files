@@ -5,7 +5,7 @@ return [
     'name' => 'Sub App',
 
     'root' => [
-        'path' => '/home/owl/workspace/www/self/user/storage/'
+        'path' => '/home/dwi/workspace/www/user/storage/'
     ],
 
     'values' => [
