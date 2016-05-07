@@ -7,7 +7,7 @@
         <div class="row">
             <div class="col-sm-12">
                 @include('crud.partials.form', [
-                    'url' => $classAttrs->single.'/'.$object->id,
+                    'url' => $___classAttrs->single.'/'.$object->id,
                     'method' => 'patch',
                     'submitLabel' => 'Update',
                 ])

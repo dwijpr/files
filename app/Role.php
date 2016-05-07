@@ -49,7 +49,9 @@ class Role extends Model
 
     public static function listFields() {
         return [
-            'id', 'name', 'label', 'priority',
+            'id', 'name',
+            'permissions' => 'name',
+            'label', 'priority',
         ];
     }
     

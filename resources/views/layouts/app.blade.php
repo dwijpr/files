@@ -10,6 +10,7 @@
     {!! Html::style('thirdparty/fonts/Lato/latostyle.css') !!}
     {!! Html::style('thirdparty/font-awesome/4.6.1/css/font-awesome.css') !!}
     {!! Html::style('thirdparty/bootstrap/3.3.6/css/bootstrap.css') !!}
+    {!! Html::style('thirdparty/jquery-jsonview/1.2.3/dist/jquery.jsonview.css') !!}
 
     <style>
         body {
@@ -20,12 +21,27 @@
         .fa-btn {
             margin-right: 6px;
         }
+
+        .btn-group {
+            white-space: nowrap;
+        }
+        .btn-group > .btn {
+            float: inherit;
+        }
+        .btn-group > .btn + .btn {
+            margin-left: -4px;
+        }
+
+        .jsonview{
+            font-size: 10px;
+        }
     </style>
 
     @yield ('styles')
     
     {!! Html::script('thirdparty/js/jquery-1.12.3.js') !!}
     {!! Html::script('thirdparty/bootstrap/3.3.6/js/bootstrap.js') !!}
+    {!! Html::script('thirdparty/jquery-jsonview/1.2.3/dist/jquery.jsonview.js') !!}
 </head>
 <body id="app-layout">
     <nav class="navbar navbar-default navbar-fixed-top">
@@ -86,5 +102,16 @@
         </div>
     </nav>
     @yield('content')
+
+    <script>
+        $(function() {
+            $(".jsonview").each(function (){
+                $el = $(this);
+                $el.JSONView($el.data('json'), {
+                    collapsed: true
+                });
+            });
+        });
+    </script>
 </body>
 </html>

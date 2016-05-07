@@ -11,7 +11,7 @@
                     echo Form::{$type}(
                         $name
                         , objectsToArrayKeyValue($hasManyObjects, 'id', 'name')
-                        , objectsToArray(@$object->{$classAttrs->hasMany}, 'id')
+                        , objectsToArray(@$object->{$___classAttrs->hasMany}, 'id')
                         , [
                             'class' => 'form-control',
                             'readonly' => @$readonly,

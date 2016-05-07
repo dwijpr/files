@@ -13,19 +13,19 @@
         <i class="fa fa-trash"></i>
     </button>
     <a href="{{ url(
-        $classAttrs->backend.$classAttrs->single.'/'.$object->id
+        $___classAttrs->backend.$___classAttrs->single.'/'.$object->id
     ) }}" class="btn btn-default">
         <i class="fa fa-edit"></i>
     </a>
     <a href="{{ url(
-        $classAttrs->backend.$classAttrs->plural.'/'.$object->id
+        $___classAttrs->backend.$___classAttrs->plural.'/'.$object->id
     ) }}" class="btn btn-default">
         <i class="fa fa-eye"></i>
     </a>
 </div>
 
 {!! Form::open([
-    'url' => $classAttrs->backend.$classAttrs->single.'/'.$object->id,
+    'url' => $___classAttrs->backend.$___classAttrs->single.'/'.$object->id,
     'id' => $crudActionFormID,
     'method' => 'delete',
 ]) !!}

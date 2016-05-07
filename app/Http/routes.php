@@ -16,8 +16,7 @@ Route::auth();
 Route::get('/', 'IndexController@index');
 
 
-$objects = [
-];
+$objects = [];
 
 foreach ($objects as $i => $v) {
     $object = new \stdClass;

@@ -8,6 +8,10 @@ return [
         'path' => '/home/owl/workspace/www/self/user/storage/'
     ],
 
+    'values' => [
+        'pagination' => 10
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Application Environment
@@ -58,7 +62,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'Asia/Jakarta',
 
     /*
     |--------------------------------------------------------------------------
@@ -167,6 +171,7 @@ return [
          */
         Collective\Html\HtmlServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
+        Spatie\Activitylog\ActivitylogServiceProvider::class,
     ],
 
     /*
@@ -219,6 +224,7 @@ return [
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
+        'Activity' => Spatie\Activitylog\ActivitylogFacade::class,
     ],
 
 ];

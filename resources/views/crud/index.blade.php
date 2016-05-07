@@ -12,55 +12,65 @@
                             <thead>
                                 <tr>
                                     @foreach (
-                                        $class::listFields() as $key => $field
+                                        $___classAttrs->model::listFields() as $key => $field
                                     )
                                         <th>
                                             @if (!is_numeric($key))
                                                 {{ ucwords($key) }}
                                             @else
-                                                {{ ucwords($field) }}
+                                                {{ ucwords(to_words($field)) }}
                                             @endif
                                         </th>
                                     @endforeach
-                                    <th>Action</th>
+                                    @if (!$___classAttrs->viewOnly)
+                                        <th>Action</th>
+                                    @endif
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach($objects as $object)
                                     <tr>
                                         @foreach (
-                                            $class::listFields()
+                                            $___classAttrs->model::listFields()
                                             as $key => $field
                                         )
                                             <td>
                                                 @include ('crud.partials.field')
                                             </td>
                                         @endforeach
-                                        <td>
-
-                                            @include(
-                                                $classAttrs->actionViewPath
-                                            )
-                                        </td>
+                                        @if (!$___classAttrs->viewOnly)
+                                            <td>
+                                                @include(
+                                                    $___classAttrs->actionViewPath
+                                                )
+                                            </td>
+                                        @endif
                                     </tr>
                                 @endforeach
                             </tbody>
                         </table>
                     </div>
                 @else
-                    <h2>No {{ $classAttrs->single }} Found!</h2>
+                    <h2>No {{ $___classAttrs->single }} Found!</h2>
                 @endif
-                <div>
-                    <a
-                        class="btn btn-lg btn-primary"
-                        href="{{ url(
-                            $classAttrs->backend.$classAttrs->single
-                        ) }}"
-                    >
-                        <i class="fa fa-btn fa-plus"></i>
-                        Create New {{ $classAttrs->single }}
-                    </a>
-                </div>
+                @if (!$___classAttrs->viewOnly)
+                    <div>
+                        <a
+                            class="btn btn-lg btn-primary"
+                            href="{{ url(
+                                $___classAttrs->backend.$___classAttrs->single
+                            ) }}"
+                        >
+                            <i class="fa fa-btn fa-plus"></i>
+                            Create New {{ $___classAttrs->single }}
+                        </a>
+                    </div>
+                @endif
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 text-center">
+                {{ $objects->links() }}
             </div>
         </div>
     </div>

@@ -1,11 +1,11 @@
 {!! Form::open([
-    'url' => $classAttrs->backend.(@$url?:$classAttrs->single),
+    'url' => $___classAttrs->backend.(@$url?:$___classAttrs->single),
     'method' => @$method?:'post',
     'class' => 'form-horizontal',
     'role' => 'form',
 ]) !!}
     
-    @foreach ($class::toBeFilledFields() as $field => $value)
+    @foreach ($___classAttrs->model::toBeFilledFields() as $field => $value)
         <?php
             $data = [
                 'name' => $field,
@@ -37,7 +37,7 @@
                 </button>
             @else
                 <a href="{{ url(
-                    $classAttrs->backend.$classAttrs->single.'/'.$object->id
+                    $___classAttrs->backend.$___classAttrs->single.'/'.$object->id
                 ) }}" class="btn btn-info">
                     <i class="fa fa-btn fa-edit"></i>
                     Edit
