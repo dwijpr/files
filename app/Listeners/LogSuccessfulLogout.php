@@ -12,8 +12,7 @@ class LogSuccessfulLogout
 {
     public function handle(Logout $event)
     {
-        activity_log([
-            'key' => 'LogSuccessfulLogout',
+        activity_log('successful_logout', [
             'event' => $event,
         ]);
     }

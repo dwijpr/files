@@ -9,8 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 class LogAuthenticationAttempt
 {
     public function handle(Attempting $event) {
-        activity_log([
-            'key' => 'LogAuthenticationAttempt',
+        activity_log('authentication_attempt', [
             'event' => $event,
         ]);
     }

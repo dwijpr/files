@@ -18,12 +18,4 @@ class ActivityController extends CRUDController
     public function _init() {
         if (!$this->authorized('manage-users')) abort(403);
     }
-
-    protected function validation($id = false) {
-        return [];
-    }
-
-    protected function data() {
-        return [];
-    }
 }

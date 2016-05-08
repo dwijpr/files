@@ -90,8 +90,13 @@ abstract class CRUDController extends Controller {
         return redirect($this->___vars->redirect);
     }
 
-    protected abstract function validation($id = false);
-    protected abstract function data();
+    protected function validation($id = false) {
+        return [];
+    }
+    
+    protected function data() {
+        return [];
+    }
 
     protected function hasManyObjects() {
         return false;

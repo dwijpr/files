@@ -1,5 +1,12 @@
 <?php
 
+if (!function_exists('bool_val')) {
+    function bool_val($bool) {
+        $text = $bool?'true':'false';
+        return $text;
+    }
+}
+
 if (!function_exists('root_url')) {
     function root_url($path = false) {
         $url = $_SERVER['SERVER_NAME'].($path?"/".$path:"");
@@ -15,9 +22,17 @@ if (!function_exists('to_words')) {
 }
 
 if (!function_exists('activity_log')) {
-    function activity_log($object) {
+    function activity_log($key, $object = []) {
         $stringObject = json_encode($object);
-        Activity::log($stringObject);
+        \App\Activity::create([
+            'user_id' => @auth()->user()->id,
+            'key' => $key,
+            'uri' => request()->getRequestUri(),
+            'method' => request()->getMethod(),
+            'user_agent' => request()->header('User-Agent'),
+            'ip_address' => request()->ip(),
+            'data' => $stringObject,
+        ]);
     }
 }
 

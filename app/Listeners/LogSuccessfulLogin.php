@@ -12,8 +12,7 @@ class LogSuccessfulLogin
 {
     public function handle(Login $event)
     {
-        activity_log([
-            'key' => 'LogSuccessfulLogin',
+        activity_log('successful_login', [
             'event' => $event,
         ]);
     }
