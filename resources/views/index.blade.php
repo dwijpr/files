@@ -10,18 +10,37 @@
                         <thead>
                             <tr>
                                 <th>Name</th>
-                                <th>Size</th>
+                                <th style="width: 108px;">Size</th>
                                 <th>Type</th>
-                                <th>Modified</th>
+                                <th style="width: 148px;">Modified</th>
                             </tr>
                         </thead>
                         <tbody>
+                            @if ($attrs['parent'] !== false)
+                                <tr
+                                    onclick="window.location='{{ 
+                                        url($attrs['parent'])
+                                    }}'"
+                                >
+                                    <td colspan="4">..</td>
+                                </tr>
+                            @endif
                             @foreach ($items as $i => $item)
-                                <tr>
+                                <tr
+                                    @if ($item->type === 'directory')
+                                        onclick="window.location='{{ 
+                                            url()->current().'/'.$item->name
+                                        }}'"
+                                    @endif
+                                >
                                     <td>{{ $item->name }}</td>
-                                    <td class="text-right">{{ $item->size }}</td>
+                                    <td class="text-right">
+                                        {{ human_filesize($item->size) }}
+                                    </td>
                                     <td>{{ $item->type }}</td>
-                                    <td>{{ $item->modified }}</td>
+                                    <td>
+                                        {{ read_time('U~'.$item->modified) }}
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>

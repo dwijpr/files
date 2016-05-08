@@ -1,5 +1,45 @@
 <?php
 
+use Carbon\Carbon;
+use \GetId3\GetId3Core as GetId3;
+
+if (!function_exists('mime_type')) {
+    function mime_type($path) {
+        $ext = pathinfo($path, PATHINFO_EXTENSION);
+        if (!in_array($ext, ['mp3'])){
+            return false; 
+        }
+        $getId3 = new GetId3();
+        $mimeType = $getId3
+            ->analyze($path);
+        return $mimeType;
+    }
+}
+
+if (!function_exists('human_filesize')) {
+    function human_filesize($bytes, $decimals = 2) {
+        if(!$bytes){
+            return "";
+        }
+        $size = ['B', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+        $factor = floor((strlen($bytes) - 1) / 3);
+        return sprintf("%.{$decimals}f ", $bytes / pow(1024, $factor))
+            .@$size[$factor];
+    }
+}
+
+if (!function_exists('read_time')) {
+    function read_time($dateTime) {
+        if (is_string($dateTime)) {
+            $dateTime = explode('~', $dateTime);
+            $dateTime = Carbon::createFromFormat(
+                head($dateTime), last($dateTime)
+            );
+        }
+        return $dateTime->diffForHumans();
+    }
+}
+
 if (!function_exists('bool_val')) {
     function bool_val($bool) {
         $text = $bool?'true':'false';

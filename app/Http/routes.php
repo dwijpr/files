@@ -44,3 +44,6 @@ function CRUDRoutes($object){
     _route('patch',  $single.'/'."{{$single}}", $controller.'update');
     _route('delete', $single.'/'."{{$single}}", $controller.'destroy');
 }
+
+Route::get('{param}/{params?}', 'IndexController@index')
+    ->where('params', '(.)*');
