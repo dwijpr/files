@@ -16,8 +16,11 @@ class CreateActivitiesTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned()->nullable();
             $table->string('key');
+            $table->text('uri');
+            $table->string('method');
             $table->string('user_agent');
             $table->string('ip_address');
+            $table->string('app_name');
             $table->text('data');
             $table->timestamps();
         });

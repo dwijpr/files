@@ -31,6 +31,7 @@ if (!function_exists('activity_log')) {
             'method' => request()->getMethod(),
             'user_agent' => request()->header('User-Agent'),
             'ip_address' => request()->ip(),
+            'app_name' => config('app.name'),
             'data' => $stringObject,
         ]);
     }

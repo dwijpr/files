@@ -16,7 +16,7 @@
                                     )
                                         <th>
                                             @if (!is_numeric($key))
-                                                {{ ucwords($key) }}
+                                                {{ ucwords(to_words($key)) }}
                                             @else
                                                 {{ ucwords(to_words($field)) }}
                                             @endif

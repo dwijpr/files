@@ -11,6 +11,13 @@
                     data-json="{{ $object->$key }}"
                 ></div>
 <?php
+            } elseif (@$field['uaparse']) {
+?>
+                <div
+                >
+                    {{ implode(' ', parse_user_agent($object->$key)) }}
+                </div>
+<?php
             }
         } else {
             $return = "-";

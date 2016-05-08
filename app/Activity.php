@@ -9,7 +9,8 @@ class Activity extends Model
     use MyModel;
 
     protected $fillable = [
-        'user_id', 'data', 'key', 'user_agent', 'ip_address',
+        'user_id', 'data', 'key', 'uri', 'method', 'user_agent', 'ip_address',
+        'app_name',
     ];
     protected $connection = 'super';
 
@@ -22,8 +23,11 @@ class Activity extends Model
             'id', 
             'user_id',
             'key',
-            'user_agent',
+            'uri',
+            'method',
+            'user_agent' => [ 'uaparse' => true ],
             'ip_address',
+            'app_name',
             'data' => [ 'jsonview' => true ],
             'created_at',
         ];
