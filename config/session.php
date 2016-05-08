@@ -57,7 +57,7 @@ return [
     |
     */
 
-    'files' => config('app.root.path').'framework/sessions',
+    'files' => '/home/dwi/workspace/www/user/storage/framework/sessions',
 
     /*
     |--------------------------------------------------------------------------
