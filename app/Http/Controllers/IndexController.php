@@ -38,7 +38,7 @@ class IndexController extends Controller
     }
 
     private function ignoredFiles() {
-        $ignores = ['.filesignore'];
+        $ignores = ['.files', '.filesignore'];
         if (Storage::exists('.filesignore')) {
             $ignores = array_merge(
                 $ignores, to_lines(Storage::get('.filesignore'))
@@ -70,6 +70,7 @@ class IndexController extends Controller
         return view('index', [
             'items' => $this->items,
             'up_dir' => $this->upDir(),
+            'segments' => request()->segments(),
         ]);
     }
 }
