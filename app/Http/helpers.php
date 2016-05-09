@@ -3,6 +3,12 @@
 use Carbon\Carbon;
 use \GetId3\GetId3Core as GetId3;
 
+if (!function_exists('to_lines')) {
+    function to_lines($string) {
+        return preg_split('/\n|\r/', $string, -1, PREG_SPLIT_NO_EMPTY);
+    }
+}
+
 if (!function_exists('mime_type')) {
     function mime_type($path) {
         $ext = pathinfo($path, PATHINFO_EXTENSION);

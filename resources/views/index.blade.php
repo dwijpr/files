@@ -16,10 +16,10 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @if ($attrs['parent'] !== false)
+                            @if ($up_dir !== false)
                                 <tr
                                     onclick="window.location='{{ 
-                                        url($attrs['parent'])
+                                        url($up_dir)
                                     }}'"
                                 >
                                     <td colspan="4">..</td>
