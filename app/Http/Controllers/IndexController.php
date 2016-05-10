@@ -16,6 +16,28 @@ class IndexController extends Controller
         parent::__construct();
     }
 
+    public function view($path = false) {
+        $response = Response::make(Storage::get($path), 200);
+        $response->header("Content-Type", Storage::mimeType($path));
+        return $response;
+    }
+
+    public function browse($rPath = false) {
+        $this->browseInit($rPath);
+        $this->checkDestination();
+        switch ($this->browse->filetype) {
+            case 'dir':
+            case 'file':
+                $this->{'exec'.ucfirst($this->browse->filetype)}();
+                break;
+            default:
+                abort(503);
+        }
+        return view('index', [
+            'browse' => $this->browse
+        ]);
+    }
+
     private function browseInit($rPath) {
         $browse = new \stdClass;
         $browse->storageConfigKey = "filesystems.disks.{$this->disk}.root";
@@ -34,23 +56,8 @@ class IndexController extends Controller
             array_pop($rSegments);
             $browse->upDir = to_path($rSegments);
         }
+        $browse->items = [];
         $this->browse = $browse;
-    }
-
-    public function browse($rPath = false) {
-        $this->browseInit($rPath);
-        $this->checkDestination();
-        switch ($this->browse->filetype) {
-            case 'dir':
-            case 'file':
-                $this->{'exec'.ucfirst($this->browse->filetype)}();
-                break;
-            default:
-                abort(503);
-        }
-        return view('index', [
-            'browse' => $this->browse
-        ]);
     }
 
     private function ignoredFiles() {
@@ -83,12 +90,6 @@ class IndexController extends Controller
         } else {
             abort(404);
         }
-    }
-
-    public function view($path = false) {
-        $response = Response::make(Storage::get($path), 200);
-        $response->header("Content-Type", Storage::mimeType($path));
-        return $response;
     }
 
     private function collectItems($single) {

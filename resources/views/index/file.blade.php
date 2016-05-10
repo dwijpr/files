@@ -7,6 +7,13 @@
     <div class="col-md-9">
         <div>
             <div class="btn-group" role="group" aria-label="...">
+                <a
+                    href="{{ url('browse/'.$browse->upDir) }}"
+                    type="button"
+                    class="btn btn-default"
+                >
+                    Back
+                </a>
                 <button type="button" class="btn btn-default">
                     Download
                 </button>
