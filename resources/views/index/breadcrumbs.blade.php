@@ -15,7 +15,7 @@
                     $_segments[] = $segment;
                 ?>
                 <a
-                    href="{{ url(implode('/', $_segments)) }}"
+                    href="{{ url('browse/'.implode('/', $_segments)) }}"
                     class="btn btn-default"
                 >
                     {{ urldecode($segment) }}

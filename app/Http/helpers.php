@@ -41,7 +41,11 @@ if (!function_exists('mime_type')) {
 if (!function_exists('human_filesize')) {
     function human_filesize($bytes, $as_array = false, $decimals = 2) {
         if(!$bytes){
-            return "";
+            if ($as_array) {
+                return [ 0, 'B'];
+            } else {
+                return "";
+            }
         }
         $size = ['B', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
         $factor = floor((strlen($bytes) - 1) / 3);

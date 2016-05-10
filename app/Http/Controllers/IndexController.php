@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 
-use Storage;
+use Storage, Response;
 
 class IndexController extends Controller
 {
@@ -16,8 +16,17 @@ class IndexController extends Controller
         $this->_ = "filesystems.disks.local.root";
     }
 
+    public function fileView($params) {
+        $params = "/".$params;
+        $params = str_replace(config($this->_), '', $params);
+        $response = Response::make(Storage::get($params), 200);
+        $response->header("Content-Type", Storage::mimeType($params));
+        return $response;
+    }
+
     private function upDir() {
         $segments = request()->segments();
+        array_shift($segments);
         if (count($segments) > 0) {
             unset($segments[count($segments)-1]);
             return implode('/', $segments);
@@ -27,6 +36,7 @@ class IndexController extends Controller
 
     private function destDir() {
         $segments = request()->segments();
+        array_shift($segments);
         if (count($segments) > 0) {
             if ($this->dest->type !== 'directory') {
                 array_pop($segments);
@@ -52,7 +62,7 @@ class IndexController extends Controller
         $items = Storage::$plural();
         foreach ($items as $i => $item) {
             if (!in_array($item, $this->ignores)) {
-                $this->items[] = new Item($item, $single);
+                $this->items[] = new Item($item, $single, $this->params);
             }
         }
     }
@@ -64,6 +74,7 @@ class IndexController extends Controller
 
     private function getDestPath() {
         $segments = request()->segments();
+        array_shift($segments);
         $uri = "/".urldecode(implode('/', $segments));
         $destPath = $uri;
         return $destPath;
@@ -95,13 +106,18 @@ class IndexController extends Controller
     }
 
     private function execFile() {
-        $item = new Item(urldecode(last(request()->segments())), 'file');
+        $item = new Item(
+            urldecode(last(request()->segments()))
+            , 'file'
+            , $this->params
+        );
         return [
             'item' => $item,
         ];
     }
 
     public function index($params = false) {
+        $this->params = $params;
         $this->checkDest();
         $this->changeStorageRoot();
         $data = [];
@@ -113,9 +129,11 @@ class IndexController extends Controller
             default:
                 abort(503);
         }
+        $segments = request()->segments();
+        array_shift($segments);
         view()->share([
             'up_dir' => $this->upDir(),
-            'segments' => request()->segments(),
+            'segments' => $segments,
         ]);
         return view('index', $data);
     }
@@ -124,7 +142,7 @@ class IndexController extends Controller
 class Item{
     var $name, $type, $size, $modified;
 
-    public function __construct($name, $type) {
+    public function __construct($name, $type, $params) {
         $this->name = $name;
         $this->type = $type;
         $storagePath  = Storage::disk('local')
@@ -138,10 +156,11 @@ class Item{
                 $this->type = Storage::mimeType($name);
             }
             $this->size = Storage::size($name);
+            $this->src = url('view'.$this->filepath);
         } else {
             $this->size = directory_size($this->filepath);
         }
         $this->modified = Storage::lastModified($name);
-        $this->url = Storage::url($name);
+        $this->url = url('browse/'.$params.'/'.$name);
     }
 }

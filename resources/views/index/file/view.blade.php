@@ -3,7 +3,7 @@
         case 'video':
 ?>
             <video controls>
-                <source src="{{ $item->url }}" type="{{ $item->type }}">
+                <source src="{{ $item->src }}" type="{{ $item->type }}">
                 Your browser does not support the preview ... :(
             </video>
 <?php

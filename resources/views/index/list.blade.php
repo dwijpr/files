@@ -12,7 +12,7 @@
             @if ($up_dir !== false)
                 <tr
                     onclick="window.location='{{ 
-                        url($up_dir)
+                        url('browse/'.$up_dir)
                     }}'"
                 >
                     <td colspan="4">..</td>
@@ -22,7 +22,7 @@
                 @foreach ($items as $i => $item)
                     <tr
                         onclick="window.location='{{ 
-                            url()->current().'/'.$item->name
+                            $item->url
                         }}'"
                     >
                         <td>{{ $item->name }}</td>
