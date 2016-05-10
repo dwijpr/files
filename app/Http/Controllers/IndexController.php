@@ -28,10 +28,10 @@ class IndexController extends Controller
     private function destDir() {
         $segments = request()->segments();
         if (count($segments) > 0) {
-            $uri = "/".urldecode(implode('/', $segments));
-            if (!file_exists(config($this->_).$uri)) {
-                abort(404);
+            if ($this->dest->type !== 'directory') {
+                array_pop($segments);
             }
+            $uri = "/".urldecode(implode('/', $segments));
             return $uri;
         }
         return false;
@@ -62,16 +62,62 @@ class IndexController extends Controller
         config([$this->_ => $path]);
     }
 
-    public function index($params = false) {
-        $this->changeStorageRoot();
+    private function getDestPath() {
+        $segments = request()->segments();
+        $uri = "/".urldecode(implode('/', $segments));
+        $destPath = $uri;
+        return $destPath;
+    }
+
+    private function checkDest() {
+        $dest = new \stdClass;
+        $destPath = config($this->_).$this->getDestPath();
+        if (file_exists($destPath)) {
+            $dest->type = 'unknown';
+            if (is_dir($destPath)) {
+                $dest->type = 'directory';
+            } elseif (is_file($destPath)) {
+                $dest->type = 'file';
+            }
+        } else {
+            abort(404);
+        }
+        $this->dest = $dest;
+    }
+
+    private function execDirectory() {
         $this->ignoredFiles();
         $this->collectItems('directory');
         $this->collectItems('file');
-        return view('index', [
+        return [
             'items' => $this->items,
+        ];
+    }
+
+    private function execFile() {
+        $item = new Item(urldecode(last(request()->segments())), 'file');
+        return [
+            'item' => $item,
+        ];
+    }
+
+    public function index($params = false) {
+        $this->checkDest();
+        $this->changeStorageRoot();
+        $data = [];
+        switch ($this->dest->type) {
+            case 'directory':
+            case 'file':
+                $data = $this->{'exec'.ucfirst($this->dest->type)}();
+                break;
+            default:
+                abort(503);
+        }
+        view()->share([
             'up_dir' => $this->upDir(),
             'segments' => request()->segments(),
         ]);
+        return view('index', $data);
     }
 }
 
@@ -83,15 +129,19 @@ class Item{
         $this->type = $type;
         $storagePath  = Storage::disk('local')
             ->getDriver()->getAdapter()->getPathPrefix();
+        $this->filepath = $storagePath."/".$name;
         if ($type === 'file') {
-            $mime_type = mime_type($storagePath."/".$name);
+            $mime_type = mime_type($this->filepath);
             if ($mime_type !== false AND @$mime_type['mime_type']) {
                 $this->type = $mime_type['mime_type'];
             } else {
                 $this->type = Storage::mimeType($name);
             }
+            $this->size = Storage::size($name);
+        } else {
+            $this->size = directory_size($this->filepath);
         }
-        $this->size = Storage::size($name);
         $this->modified = Storage::lastModified($name);
+        $this->url = Storage::url($name);
     }
 }

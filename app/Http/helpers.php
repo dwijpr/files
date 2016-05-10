@@ -3,6 +3,22 @@
 use Carbon\Carbon;
 use \GetId3\GetId3Core as GetId3;
 
+if (!function_exists('directory_size')) {
+    function directory_size($path) {
+        $size = 0;
+        foreach (glob(rtrim($path, '/').'/*', GLOB_NOSORT) as $target) {
+            $size += is_file($target)?filesize($target):directory_size($target);
+        }
+        return $size;
+    }
+}
+
+if (!function_exists('simple_file_type')) {
+    function simple_file_type($mime_type) {
+        return head(explode('/', $mime_type));
+    }
+}
+
 if (!function_exists('to_lines')) {
     function to_lines($string) {
         return preg_split('/\n|\r/', $string, -1, PREG_SPLIT_NO_EMPTY);
@@ -23,12 +39,18 @@ if (!function_exists('mime_type')) {
 }
 
 if (!function_exists('human_filesize')) {
-    function human_filesize($bytes, $decimals = 2) {
+    function human_filesize($bytes, $as_array = false, $decimals = 2) {
         if(!$bytes){
             return "";
         }
         $size = ['B', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
         $factor = floor((strlen($bytes) - 1) / 3);
+        if ($as_array) {
+            return [
+                sprintf("%.{$decimals}f ", $bytes / pow(1024, $factor)),
+                @$size[$factor],
+            ];
+        }
         return sprintf("%.{$decimals}f ", $bytes / pow(1024, $factor))
             .@$size[$factor];
     }
