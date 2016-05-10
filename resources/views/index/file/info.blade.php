@@ -14,7 +14,7 @@
                         Name
                     </td>
                     <td>
-                        {{ $item->name }}
+                        {{ $browse->item->name }}
                     </td>
                 </tr>
                 <tr>
@@ -22,7 +22,7 @@
                         Type
                     </td>
                     <td>
-                        {{ $item->type }}
+                        {{ $browse->item->mimeType }}
                     </td>
                 </tr>
                 <tr>
@@ -30,7 +30,7 @@
                         Size
                     </td>
                     <td>
-                        {{ human_filesize($item->size) }}
+                        {{ human_filesize($browse->item->size) }}
                     </td>
                 </tr>
                 <tr>
@@ -38,7 +38,7 @@
                         Modified
                     </td>
                     <td>
-                        {{ read_time('U~'.$item->modified) }}
+                        {{ read_time('U~'.$browse->item->modified) }}
                     </td>
                 </tr>
             </tbody>

@@ -3,6 +3,24 @@
 use Carbon\Carbon;
 use \GetId3\GetId3Core as GetId3;
 
+if (!function_exists('to_path')) {
+    function to_path($segments, $absolute = true) {
+        $segments = array_filter($segments, function($value) {
+            return $value;
+        });
+        return ($absolute?"/":"").implode('/', $segments);
+    }
+}
+
+if (!function_exists('to_segments')) {
+    function to_segments($path) {
+        $segments = explode('/', $path);
+        return array_filter($segments, function($value) {
+            return $value;
+        });
+    }
+}
+
 if (!function_exists('directory_size')) {
     function directory_size($path) {
         $size = 0;
@@ -26,15 +44,14 @@ if (!function_exists('to_lines')) {
 }
 
 if (!function_exists('mime_type')) {
-    function mime_type($path) {
-        $ext = pathinfo($path, PATHINFO_EXTENSION);
-        if (!in_array($ext, ['mp3'])){
-            return false; 
+    function mime_type($a_path) {
+        $ext = pathinfo($a_path, PATHINFO_EXTENSION);
+        $mime_type = finfo_file(finfo_open(FILEINFO_MIME_TYPE), $a_path); 
+        if (in_array($ext, ['mp3'])){
+            $getId3 = new GetId3();
+            $mime_type = $getId3->analyze($a_path)['mime_type'];
         }
-        $getId3 = new GetId3();
-        $mimeType = $getId3
-            ->analyze($path);
-        return $mimeType;
+        return $mime_type;
     }
 }
 

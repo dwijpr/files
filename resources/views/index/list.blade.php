@@ -9,20 +9,20 @@
             </tr>
         </thead>
         <tbody>
-            @if ($up_dir !== false)
+            @if ($browse->upDir !== false)
                 <tr
                     onclick="window.location='{{ 
-                        url('browse/'.$up_dir)
+                        url('browse/'.$browse->upDir)
                     }}'"
                 >
                     <td colspan="4">..</td>
                 </tr>
             @endif
-            @if (count($items))
-                @foreach ($items as $i => $item)
+            @if (count($browse->items))
+                @foreach ($browse->items as $i => $item)
                     <tr
                         onclick="window.location='{{ 
-                            $item->url
+                            url($item->url)
                         }}'"
                     >
                         <td>{{ $item->name }}</td>
@@ -38,7 +38,7 @@
                                 {{ last($size) }}
                             </span>
                         </td>
-                        <td>{{ $item->type }}</td>
+                        <td>{{ $item->mimeType }}</td>
                         <td>
                             {{ read_time('U~'.$item->modified) }}
                         </td>
@@ -47,7 +47,7 @@
             @endif
         </tbody>
     </table>
-    @if (!count($items))
+    @if (!count($browse->items))
         <h3 class="text-center">
             Nothing to Show ...
         </h3>

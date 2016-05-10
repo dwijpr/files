@@ -13,8 +13,10 @@
 
 Route::auth();
 
-Route::get('/', 'IndexController@index');
+Route::get('/', 'IndexController@browse');
 
+Route::get('/browse/{path?}', 'IndexController@browse')->where('path', '(.)*');
+Route::get('/view/{path?}', 'IndexController@view')->where('path', '(.)*');
 
 $objects = [];
 
@@ -44,7 +46,3 @@ function CRUDRoutes($object){
     _route('patch',  $single.'/'."{{$single}}", $controller.'update');
     _route('delete', $single.'/'."{{$single}}", $controller.'destroy');
 }
-
-Route::get('browse/{params?}', 'IndexController@index')->where('params', '(.)*');
-Route::get('view/{params}', 'IndexController@fileView')
-    ->where('params', '(.)*');

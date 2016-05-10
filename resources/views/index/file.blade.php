@@ -5,7 +5,7 @@
 
     </div>
     <div class="col-md-9">
-        <div class="text-right">
+        <div>
             <div class="btn-group" role="group" aria-label="...">
                 <button type="button" class="btn btn-default">
                     Download

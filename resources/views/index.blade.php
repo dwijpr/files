@@ -14,11 +14,11 @@
             <div class="col-md-12">
                 <div class="content">
 
-                    @if (@$items)
+                    @if (@$browse->items)
 
                         @include('index.list')
 
-                    @elseif (@$item)
+                    @elseif (@$browse->item)
 
                         @include('index.file')
 

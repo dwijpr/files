@@ -10,7 +10,7 @@
             <?php
                 $_segments = [];
             ?>
-            @foreach ($segments as $i => $segment)
+            @foreach ($browse->rSegments as $i => $segment)
                 <?php
                     $_segments[] = $segment;
                 ?>
