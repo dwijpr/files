@@ -53,7 +53,7 @@ if (!function_exists('mime_type')) {
         if(
             !in_array(
                 $mime_type
-                , ['directory', 'text/x-php']
+                , ['directory', 'text/x-php', 'audio/x-m4a']
             )
         ) {
             $repository = new Dflydev\ApacheMimeTypes\PhpRepository;

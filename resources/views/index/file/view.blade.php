@@ -1,6 +1,17 @@
 <?php
     $preview = preview_mime_type($browse->item->mimeType);
     switch (head($preview)) {
+        case 'audio':
+?>
+            <audio controls>
+                <source
+                    src="{{ $browse->item->src }}"
+                    type="{{ $browse->item->mimeType }}"
+                >
+                Your browser does not support the preview ... :(
+            </audio>
+<?php
+            break;
         case 'video':
 ?>
             <video controls>
