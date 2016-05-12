@@ -10,7 +10,7 @@
         "laravelcollective/html": "5.2.*",
         "barryvdh/laravel-debugbar": "^2.2",
         "donatj/phpuseragentparser": "*",
-        "phansys/getid3": "v2.0.0-BETA1"
+        "dflydev/apache-mime-types": "^1.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

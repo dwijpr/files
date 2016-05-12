@@ -26,6 +26,6 @@
         <hr>
 
         @include('index.file.view')
-
+            
     </div>
 </div>

@@ -32,7 +32,7 @@
             margin-left: -4px;
         }
 
-        .jsonview{
+        .jsonview {
             font-size: 10px;
         }
     </style>
@@ -42,6 +42,7 @@
     {!! Html::script('thirdparty/js/jquery-1.12.3.js') !!}
     {!! Html::script('thirdparty/bootstrap/3.3.6/js/bootstrap.js') !!}
     {!! Html::script('thirdparty/jquery-jsonview/1.2.3/dist/jquery.jsonview.js') !!}
+    {!! Html::script('thirdparty/ace-builds/1.2.3/src-noconflict/ace.js') !!}
 </head>
 <body id="app-layout">
     <nav class="navbar navbar-default navbar-fixed-top">
@@ -101,6 +102,7 @@
             </div>
         </div>
     </nav>
+
     @yield('content')
 
     <script>

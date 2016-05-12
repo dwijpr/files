@@ -132,5 +132,10 @@ class Item{
         $this->url = url('browse/'.$rPath);
         $this->src = url('view/'.$rPath);
         $this->download = url('download/'.$rPath);
+        $this->rPath = $rPath;
+    }
+
+    public function get() {
+        return Storage::get($this->rPath);
     }
 }

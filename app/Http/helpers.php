@@ -31,9 +31,13 @@ if (!function_exists('directory_size')) {
     }
 }
 
-if (!function_exists('simple_file_type')) {
-    function simple_file_type($mime_type) {
-        return head(explode('/', $mime_type));
+if (!function_exists('preview_mime_type')) {
+    function preview_mime_type($mime_type) {
+        $maps = [
+            'application/javascript' => ['text', 'javascript'],
+            'application/json' => ['text', 'json'],
+        ];
+        return @$maps[$mime_type]?:explode('/', $mime_type);
     }
 }
 
@@ -45,11 +49,17 @@ if (!function_exists('to_lines')) {
 
 if (!function_exists('mime_type')) {
     function mime_type($a_path) {
-        $ext = pathinfo($a_path, PATHINFO_EXTENSION);
-        $mime_type = finfo_file(finfo_open(FILEINFO_MIME_TYPE), $a_path); 
-        if (in_array($ext, ['mp3'])){
-            $getId3 = new GetId3();
-            $mime_type = $getId3->analyze($a_path)['mime_type'];
+        $mime_type = mime_content_type($a_path);
+        if(
+            !in_array(
+                $mime_type
+                , ['directory', 'text/x-php']
+            )
+        ) {
+            $repository = new Dflydev\ApacheMimeTypes\PhpRepository;
+            $ext = pathinfo($a_path, PATHINFO_EXTENSION);
+            $mime_type = $repository->findType($ext);
+            $extensions = $repository->findExtensions($mime_type);
         }
         return $mime_type;
     }
