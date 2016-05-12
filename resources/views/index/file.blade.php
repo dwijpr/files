@@ -8,15 +8,19 @@
         <div>
             <div class="btn-group" role="group" aria-label="...">
                 <a
-                    href="{{ url('browse/'.$browse->upDir) }}"
+                    href="{{ url($browse->upDir) }}"
                     type="button"
                     class="btn btn-default"
                 >
                     Back
                 </a>
-                <button type="button" class="btn btn-default">
+                <a
+                    href="{{ $browse->item->download }}"
+                    type="button"
+                    class="btn btn-default"
+                >
                     Download
-                </button>
+                </a>
             </div>
         </div>
         <hr>

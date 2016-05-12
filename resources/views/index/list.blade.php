@@ -12,7 +12,7 @@
             @if ($browse->upDir !== false)
                 <tr
                     onclick="window.location='{{ 
-                        url('browse/'.$browse->upDir)
+                        url($browse->upDir)
                     }}'"
                 >
                     <td colspan="4">..</td>

@@ -16,6 +16,14 @@ class IndexController extends Controller
         parent::__construct();
     }
 
+    public function download($path = false) {
+        $this->browseInit($path);
+        if(!is_file($this->browse->aPath)) {
+            abort(404);
+        }
+        return response()->download($this->browse->aPath);
+    }
+
     public function view($path = false) {
         $response = Response::make(Storage::get($path), 200);
         $response->header("Content-Type", Storage::mimeType($path));
@@ -54,7 +62,7 @@ class IndexController extends Controller
         $rSegments = $browse->rSegments;
         if (count($rSegments)) {
             array_pop($rSegments);
-            $browse->upDir = to_path($rSegments);
+            $browse->upDir = to_path(array_merge(['browse'], $rSegments));
         }
         $browse->items = [];
         $this->browse = $browse;
@@ -123,5 +131,6 @@ class Item{
         $this->modified = Storage::lastModified($rPath);
         $this->url = url('browse/'.$rPath);
         $this->src = url('view/'.$rPath);
+        $this->download = url('download/'.$rPath);
     }
 }
