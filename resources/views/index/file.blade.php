@@ -12,14 +12,14 @@
                     type="button"
                     class="btn btn-default"
                 >
-                    Back
+                    ..
                 </a>
                 <a
                     href="{{ $browse->item->download }}"
                     type="button"
                     class="btn btn-default"
                 >
-                    Download
+                    <i class="fa fa-btn fa-download"></i>
                 </a>
             </div>
         </div>

@@ -12,11 +12,17 @@
             ?>
             @foreach ($browse->rSegments as $i => $segment)
                 <?php
+                    $active = ($i == count($browse->rSegments) - 1);
+                    $url = $active
+                        ?'javascript:'
+                        :url('browse/'.implode('/', $_segments));
                     $_segments[] = $segment;
                 ?>
                 <a
-                    href="{{ url('browse/'.implode('/', $_segments)) }}"
-                    class="btn btn-default"
+                    href="{{ $url }}"
+                    class="btn btn-default {{
+                        $active?'active':''
+                    }}"
                 >
                     {{ urldecode($segment) }}
                 </a>

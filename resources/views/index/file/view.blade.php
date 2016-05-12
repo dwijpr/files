@@ -1,6 +1,11 @@
 <?php
     $preview = preview_mime_type($browse->item->mimeType);
     switch (head($preview)) {
+        case 'image':
+?>
+            <img src="{{ $browse->item->src }}">
+<?php
+            break;
         case 'audio':
 ?>
             <audio controls>
@@ -14,10 +19,9 @@
             break;
         case 'video':
 ?>
-            <video controls>
-                <source
-                    src="{{ $browse->item->src }}"
-                    type="{{ $browse->item->mimeType }}"
+            <video
+                src="{{ $browse->item->src }}"
+                controls
                 >
                 Your browser does not support the preview ... :(
             </video>

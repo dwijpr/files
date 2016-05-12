@@ -4,7 +4,6 @@
             <tr>
                 <th>Name</th>
                 <th style="width: 96px;">Size</th>
-                <th style="width: 196px;">Type</th>
                 <th style="width: 156px;">Modified</th>
             </tr>
         </thead>
@@ -25,7 +24,13 @@
                             url($item->url)
                         }}'"
                     >
-                        <td>{{ $item->name }}</td>
+                        <td>
+                            <i
+                                class="fa fa-{{ to_icon($item->mimeType) }}"
+                                title="{{ $item->mimeType }}"
+                            ></i>
+                            {{ $item->name }}
+                        </td>
                         <td class="text-right">
                             <?php
                                 $size = human_filesize($item->size, true);
@@ -38,7 +43,6 @@
                                 {{ last($size) }}
                             </span>
                         </td>
-                        <td>{{ $item->mimeType }}</td>
                         <td>
                             {{ read_time('U~'.$item->modified) }}
                         </td>

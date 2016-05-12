@@ -3,6 +3,37 @@
 use Carbon\Carbon;
 use \GetId3\GetId3Core as GetId3;
 
+if (!function_exists('to_icon')) {
+    function to_icon($mime_type) {
+        $head = head(preview_mime_type($mime_type));
+        $maps = [
+            'folder' => ['directory'],
+            'file-text-o' => [
+                'text',
+                'application/x-subrip',
+            ],
+            'code' => [
+                'application/javascript',
+                'text/x-php',
+                'application/json',
+                'text/html',
+            ],
+            'image' => ['image'],
+            'volume-up' => ['audio'],
+            'video-camera' => ['video'],
+        ];
+        foreach ([$mime_type ,$head] as $_) {
+            foreach ($maps as $k => $v) {
+                $found = array_search($_, $v);
+                if ($found !== false) {
+                    return $k;
+                }
+            }
+        }
+        return 'file-o';
+    }
+}
+
 if (!function_exists('to_path')) {
     function to_path($segments, $absolute = true) {
         $segments = array_filter($segments, function($value) {
