@@ -1,5 +1,5 @@
 <div class="table-responsive">
-    <table class="table table-hover">
+    <table class="table table-hover table-list">
         <thead>
             <tr>
                 <th>Name</th>
@@ -10,26 +10,26 @@
         <tbody>
             @if ($browse->upDir !== false)
                 <tr
-                    onclick="window.location='{{ 
-                        url($browse->upDir)
-                    }}'"
                 >
-                    <td colspan="4">..</td>
+                    <td colspan="4">
+                        <a href="{{ url($browse->upDir) }}">
+                            ..
+                        </a>
+                    </td>
                 </tr>
             @endif
             @if (count($browse->items))
                 @foreach ($browse->items as $i => $item)
                     <tr
-                        onclick="window.location='{{ 
-                            url($item->url)
-                        }}'"
                     >
                         <td>
                             <i
                                 class="fa fa-{{ to_icon($item->mimeType) }}"
                                 title="{{ $item->mimeType }}"
                             ></i>
-                            {{ $item->name }}
+                            <a href="{{ url($item->url) }}">
+                                {{ $item->name }}
+                            </a>
                         </td>
                         <td class="text-right">
                             <?php
