@@ -5,7 +5,7 @@
     >
         <ol class="breadcrumb breadcrumb-nav">
             <li>
-                <a href="{{ url('/') }}">
+                <a href="{{ url('browse/') }}">
                     <i class="glyphicon glyphicon-home"></i>
                 </a>
             </li>

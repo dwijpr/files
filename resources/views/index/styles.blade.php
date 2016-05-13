@@ -30,6 +30,12 @@
         .file-info table td:nth-child(2) {
             padding-left: 16px;
         }
+
+        .file-preview video {
+            display: inline-block;
+            max-width: 100%;
+            max-height: 384px;
+        }
     </style>
 
 @endsection

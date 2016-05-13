@@ -33,6 +33,7 @@ class IndexController extends Controller
     public function browse($rPath = false) {
         $this->browseInit($rPath);
         $this->checkDestination();
+        $this->ignoredFiles();
         switch ($this->browse->filetype) {
             case 'dir':
             case 'file':
@@ -80,16 +81,34 @@ class IndexController extends Controller
     }
 
     private function execDir() {
-        $this->ignoredFiles();
         $this->collectItems('directory');
         $this->collectItems('file');
     }
 
     private function execFile() {
+        $rSegments = $this->browse->rSegments;
+        array_pop($rSegments);
+        $this->collectItems(
+            'file'
+            , to_path($rSegments, false)
+        );
         $this->browse->item = new Item(
             $this->browse->aPath
             , $this->browse->rPath
         );
+        $itemIndex = 0;
+        foreach ($this->browse->items as $i => $item) {
+            if ($item->name === $this->browse->item->name) {
+                $itemIndex = $i;
+                break;
+            }
+        }
+        $itemPrevIndex = $itemIndex-1;
+        $itemNextIndex = $itemIndex+1;
+        $this->browse->prevItem = ($itemPrevIndex<0)
+            ?false:$this->browse->items[$itemPrevIndex];
+        $this->browse->nextItem = ($itemNextIndex>=count($this->browse->items))
+            ?false:$this->browse->items[$itemNextIndex];
     }
 
     private function checkDestination() {
@@ -100,16 +119,23 @@ class IndexController extends Controller
         }
     }
 
-    private function collectItems($single) {
+    private function collectItems($single, $rPath = false) {
+        $aSegments = $this->browse->aSegments;
+        $rSegments = $this->browse->rSegments;
+        if ($rPath) {
+            array_pop($aSegments);
+            array_pop($rSegments);
+        }
+        $rPath = $rPath?:$this->browse->rPath;
         $plural = str_plural($single);
-        $names = Storage::$plural($this->browse->rPath);
+        $names = Storage::$plural($rPath);
         foreach ($names as $i => $name) {
             $name = last(explode('/', $name));
             if (!in_array($name, $this->browse->ignores)) {
                 $this->browse->items[] = new Item(
-                    to_path(array_merge($this->browse->aSegments, [$name]))
+                    to_path(array_merge($aSegments, [$name]))
                     , to_path(
-                        array_merge($this->browse->rSegments, [$name])
+                        array_merge($rSegments, [$name])
                         , false
                     )
                 );

@@ -29,7 +29,7 @@
             break;
         case 'text':
 ?>
-            <div style="position: relative;">
+            <div style="position: relative;" class="text-left">
                 <style>
                     #text-editor {
                         position: absolute;
@@ -37,7 +37,7 @@
                         right: 0;
                         bottom: 0;
                         left: 0;
-                        min-height: 256px;
+                        min-height: 384px;
                     }
                 </style>
                 <pre id="text-editor">{{ $browse->item->get() }}</pre>
