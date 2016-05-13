@@ -1,33 +1,37 @@
 <div class="row">
     <div
         class="col-md-12 affix nav-dir"
-        style="width: 100%;overflow: auto;"
+        style="width: 100%;overflow: auto;border-bottom: 1px solid #e7e7e7;"
     >
-        <div class="btn-group btn-breadcrumb">
-            <a href="{{ url('/') }}" class="btn btn-default">
-                <i class="glyphicon glyphicon-home"></i>
-            </a>
+        <ol class="breadcrumb breadcrumb-nav">
+            <li>
+                <a href="{{ url('/') }}">
+                    <i class="glyphicon glyphicon-home"></i>
+                </a>
+            </li>
             <?php
                 $_segments = [];
             ?>
             @foreach ($browse->rSegments as $i => $segment)
                 <?php
                     $active = ($i == count($browse->rSegments) - 1);
+                    $_segments[] = $segment;
                     $url = $active
                         ?'javascript:'
                         :url('browse/'.implode('/', $_segments));
-                    $_segments[] = $segment;
                 ?>
-                <a
-                    href="{{ $url }}"
-                    class="btn btn-default {{
-                        $active?'active':''
-                    }}"
-                >
-                    {{ urldecode($segment) }}
-                </a>
+                <li {{ @$active?'class="active"':'' }}>
+                    @if (!$active)
+                        <a
+                            href="{{ $url }}"
+                        >
+                    @endif
+                        {{ urldecode($segment) }}
+                    @if (!$active)
+                        </a>
+                    @endif
+                </li>
             @endforeach
-        </div>
-        <hr>
+        </ol>
     </div>
 </div>
