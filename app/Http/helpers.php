@@ -3,6 +3,12 @@
 use Carbon\Carbon;
 use \GetId3\GetId3Core as GetId3;
 
+if (!function_exists('custom_asset')) {
+    function custom_asset($path) {
+        return url('custom/asset/'.$path);
+    }
+}
+
 if (!function_exists('to_icon')) {
     function to_icon($mime_type) {
         $head = head(preview_mime_type($mime_type));

@@ -18,6 +18,7 @@ Route::get('/', 'IndexController@browse');
 Route::get('/browse/{path?}', 'IndexController@browse')->where('path', '(.)*');
 Route::get('/view/{path?}', 'IndexController@view')->where('path', '(.)*');
 Route::get('/download/{path?}', 'IndexController@download')->where('path', '(.)*');
+Route::get('/custom/asset/{path?}', 'IndexController@customAsset')->where('path', '(.)*');
 
 $objects = [];
 

@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 
-use Storage, Response;
+use Storage, Response, File;
 
 class IndexController extends Controller
 {
@@ -30,6 +30,12 @@ class IndexController extends Controller
         return $response;
     }
 
+    public function customAsset($path) {
+        $response = Response::make(File::get($path), 200);
+        $response->header("Content-Type", File::mimeType($path));
+        return $response;
+    }
+
     public function browse($rPath = false) {
         $this->browseInit($rPath);
         $this->checkDestination();
@@ -42,13 +48,43 @@ class IndexController extends Controller
             default:
                 abort(503);
         }
-        return view('index', [
+        $view = $this->getView();
+        if (request()->ajax()) {
+            return response()->json($this->browse);
+        }
+        return view($view, [
             'browse' => $this->browse
         ]);
     }
 
+    private function getView() {
+        $return = 'index';
+        $custom = $this->findCustomView();
+        if ($custom) {
+            $segments = $custom->aSegments;
+            array_pop($segments);
+            $path = to_path($segments);
+            view()->addLocation($path);
+            view()->addNamespace('custom', $path);
+            $return = 'custom::index';
+        }
+        return $return;
+    }
+
+    private function findCustomView() {
+        $items = $this->browse->items;
+        $found = false;
+        foreach ($items as $i => $item) {
+            if ($item->name === 'index.blade.php') {
+                $found = $i;
+                break;
+            }
+        }
+        return $found?$items[$found]:false;
+    }
+
     private function browseInit($rPath) {
-        $browse = new \stdClass;
+        $browse = new Browse();
         $browse->storageConfigKey = "filesystems.disks.{$this->disk}.root";
         $browse->storageRootPath = config($browse->storageConfigKey);
         $browse->storageRootSegments = to_segments($browse->storageRootPath);
@@ -60,8 +96,10 @@ class IndexController extends Controller
         );
         $browse->aPath = to_path($browse->aSegments);
         $browse->upDir = false;
+        $browse->dir = false;
         $rSegments = $browse->rSegments;
         if (count($rSegments)) {
+            $browse->curDir = to_path(array_merge(['browse'], $rSegments));
             array_pop($rSegments);
             $browse->upDir = to_path(array_merge(['browse'], $rSegments));
         }
@@ -144,6 +182,12 @@ class IndexController extends Controller
     }
 }
 
+class Browse{
+    public function asset($path) {
+        return $this->aPath.'/index/'.$path;
+    }
+}
+
 class Item{
 
     public function __construct($aPath, $rPath) {
@@ -159,6 +203,8 @@ class Item{
         $this->src = url('view/'.$rPath);
         $this->download = url('download/'.$rPath);
         $this->rPath = $rPath;
+        $this->aPath = $aPath;
+        $this->aSegments = to_segments($aPath);
     }
 
     public function get() {
